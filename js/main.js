@@ -13,6 +13,20 @@ const $signupForm = $("#signup-form");
 const $navLogin = $("#nav-login");
 const $navUserProfile = $("#nav-user-profile");
 const $navLogOut = $("#nav-logout");
+const $navHome = $("#nav-all")
+const $navSubmit = $("#add-Story")
+const $navFavs = $("#favorites")
+const $navMyStories = $("#my-stories")
+
+const $addStoryform = $("#Story")
+const $favoritesList = $("#favorites-list")
+const $ownStoriesList = $("#own-stories")
+
+const $storyButton = $("#story-submit")
+
+
+
+let count = 0
 
 /** To make it easier for individual components to show just themselves, this
  * is a useful function that hides pretty much everything on the page. After

@@ -3,6 +3,7 @@
 body {
   font-family: Arimo, sans-serif;
   margin: 8px 7.5vw;
+  background-color: lightskyblue;
 }
 
 h1 {
@@ -120,4 +121,8 @@ form > hr {
     max-width: 900px;
     margin: 8px auto;
   }
+}
+
+.stories-container .container{
+  background-color:white;
 }

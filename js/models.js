@@ -83,37 +83,36 @@ class StoryList {
    */
 
   async addStory(user, newStory) {
-    newStory.username = user.username
-    newStory.storyId = this.getRandomId()
-    let newStoryInstance = new Story(newStory)
-    let $story = generateStoryMarkup(newStoryInstance)
-    console.log($allStoriesList[0])
-    $allStoriesList.append($story)
-    return newStoryInstance
+    const response = await axios({
+      method: 'POST',
+      url:`${BASE_URL}/stories`,
+      data: {story: newStory, token: user.loginToken},
+    });
+    let s = new Story(response.data.story)
+    return s
   }
 
-  getRandomId(){
-    let hexCharacters = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f']
-    let id = ''
-    for (let i = 0; i < 32; i++){
-      if (i == 8){
-        id += '-'
-      }
-      if (i == 13){
-        id += '-'
-      }
-      if (i == 18){
-        id += '-'
-      }
-      if (i == 23){
-        id += '-'
-      }
 
-      id += hexCharacters[(Math.floor(Math.random()*16))]
-    }
-    return id
+
+    // get request for story info
+    async removeStory(user, storyId) {
+      const response1 = await axios({
+        url: `${BASE_URL}/stories/${storyId}`,
+        method: "GET",
+      });
+      console.log(response1)
+      const stuff = response1.data.story
+    
+
+      const response2 = await axios({
+        method: 'DELETE',
+        url:`${BASE_URL}/stories/${storyId}`,
+        data:{story: {author: stuff.author, url: stuff.url, title: stuff.title}, token: user.loginToken},
+      });
+    
   }
 }
+
 
 
 /******************************************************************************
@@ -140,6 +139,7 @@ class User {
 
     // instantiate Story instances for the user's favorites and ownStories
     this.favorites = favorites.map(s => new Story(s));
+    // this.favorites = []
     this.ownStories = ownStories.map(s => new Story(s));
 
     // store the login token on the user so it's easy to find for API calls.

@@ -37,12 +37,17 @@
   <div class="navbar-brand">
     <a class="nav-link" href="#" id="nav-all">Hack or Snooze</a>
   </div>
+  <div> | </div>
+  <a id = "favorites" href="/" name = 'Favorites'> Favorites</a>
+  <div> | </div>
+  <a id = "add-Story" href="/" name = 'newStory'> Submit</a>
+  <div> | </div>
+  <a id = "my-stories" href="/" name = 'my-story'>my stories</a>
   <div class="nav-right">
     <a class="nav-link" href="#" id="nav-login">login/signup</a>
     <a class="nav-link" href="#" id="nav-user-profile"></a>
     <a class="hidden" id="nav-logout" href="#"><small>(logout)</small></a>
   </div>
-  <!-- <a href="/newStory" name = 'newStory'>Submit</a> -->
 </nav>
 
 <!-- area for stories (all stories, user stories, favorites) -->
@@ -53,6 +58,13 @@
 
   <!-- List of all stories -->
   <ol id="all-stories-list" class="stories-list"></ol>
+
+  <!-- List of favorites -->
+  <ol id = "favorites-list"></ol>
+
+  <!-- List of my stories -->
+  <ol id = "own-stories"></ol>
+
 
 </section>
 
@@ -96,14 +108,16 @@
     <button type="submit">create account</button>
   </form>
 </section>
-<!-- <form id = "Story" action="">
+<form id = "Story" action="">
   <label for="title">title: </label>
-  <input type="text">
+  <input type="text" id = "title">
   <label for="url">Url: </label>
-  <input type="text">
+  <input type="url" id = "url">
   <label for="author">Author: </label>
-  <input type="text">
-</form> -->
+  <input type="text" id = "author">
+  <button id = "story-submit">Submit</button>
+</form>
+
 
 <!-- Library JS & our JS -->
 <script src="https://unpkg.com/jquery"></script>

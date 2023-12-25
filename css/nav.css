@@ -21,3 +21,15 @@ nav {
   margin-left: auto;
   text-align: right;
 }
+
+#Story{
+  display: none;
+}
+
+.favorite{
+  
+}
+
+#favorites-list{
+  display: hidden;
+}

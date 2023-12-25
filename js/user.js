@@ -20,6 +20,7 @@ async function login(evt) {
   // User.login retrieves user info from API and returns User instance
   // which we'll make the globally-available, logged-in user.
   currentUser = await User.login(username, password);
+  localStorage.favorites = currentUser.favorites
 
   $loginForm.trigger("reset");
 
@@ -113,4 +114,21 @@ function updateUIOnUserLogin() {
   $allStoriesList.show();
 
   updateNavOnLogin();
+}
+
+function addFavorite(e){
+  currentUser.favorites.push(e.target.parentNode)
+}
+
+function removeFavorite(e){
+
+  let removedIndex = currentUser.favorites.indexOf(e.target.parentNode)
+  currentUser.favorites.splice(removedIndex,1)
+
+  // for (let favorite of $favoritesList.children()){
+  //   if (favorite == e.target.parentNode) {
+  //     console.log(e.target.parentNode)
+  //     e.target.parentNode.remove()
+  //   }
+  // }
 }
