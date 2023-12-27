@@ -24,17 +24,10 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
-    // let count = 0
-    // let end = 0
-    // console.log(this.url)
-    // for (let i = 0; i < this.url.length; i++){
-    //   if (this.url.substring(i,i+1) = "/" && count < 1){
-    //     count += 1
-    //     end = i
-    //   }
-    // }
-    return "hostname.com";
+    
+    let start = this.url.indexOf('https') + 8
+    let end = this.url.indexOf('.com')+ 4
+    return this.url.substring(start, end);
   }
 }
 
@@ -89,6 +82,7 @@ class StoryList {
       data: {story: newStory, token: user.loginToken},
     });
     let s = new Story(response.data.story)
+
     return s
   }
 
@@ -100,7 +94,7 @@ class StoryList {
         url: `${BASE_URL}/stories/${storyId}`,
         method: "GET",
       });
-      console.log(response1)
+    
       const stuff = response1.data.story
     
 

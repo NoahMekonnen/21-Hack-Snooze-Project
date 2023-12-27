@@ -24,18 +24,24 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
 
   const favoriteInput = $(`<input type = "checkbox" id = "favorite"/>`)
-  favoriteInput.on('click', function(e){
+  favoriteInput.on('click', async function(e){
     // if checked add to favorites
     if (favoriteInput[0].checked){
       currentUser.favorites.push(story)
+      await axios({
+        method: "POST",
+        url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+        data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
+      });
     }
     // if unchecked remove from favorites
     else{
-      for (let markup of $allStoriesList.children()){
-        if (markup.id == e.target.parentNode.id){
-          markup.children[0].checked = false
-        }
-      }
+      // removing favorite
+      await axios({
+      method: "DELETE",
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+      data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
+    })
 
       const removedIndex = currentUser.favorites.indexOf(story)
       currentUser.favorites.splice(removedIndex,1)
@@ -56,15 +62,60 @@ function generateStoryMarkup(story) {
     return generalMarkup.prepend(favoriteInput)
 }
 
+/**
+ * A render method to render HTML for an individual Story instance of my own stories
+ * - story: an instance of Story
+ *
+ * Returns the markup for the story.
+ */
+
 function generateOwnStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
+  const favoriteInput = $(`<input type = "checkbox" id = "favorite"/>`)
+  favoriteInput.on('click', async function(e){
+    // if checked add to favorites
+    if (favoriteInput[0].checked){
+      // story.checked = true
+      currentUser.favorites.push(story)
+      await axios({
+        method: "POST",
+        url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+        data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
+      });
+    }
+    // if unchecked remove from favorites
+    else{
+      // removing favorite
+      await axios({
+      method: "DELETE",
+      url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+      data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
+    })
+      // story.checked = false
+      const removedIndex = currentUser.favorites.indexOf(story)
+      currentUser.favorites.splice(removedIndex,1)
+    }
+
+  })
+  // if (story.checked){
+
+  //   favoriteInput[0].checked = true
+  // }
+
   const removeButton = $('<button>Delete</button>')
   // remove button functionality
   removeButton.on('click', function(e){
     e.preventDefault()
-
+    for (let story1 of storyList.stories){
+      if (story1.storyId == story.storyId){
+        let removedIndex1 = storyList.stories.indexOf(story1)
+        storyList.stories.splice(removedIndex1,1)
+      }
+    }
+    
     storyList.removeStory(currentUser, story.storyId)
     e.target.parentNode.remove()
+
     const removedIndex = currentUser.ownStories.indexOf(story)
     currentUser.ownStories.splice(removedIndex,1)
     
@@ -85,6 +136,7 @@ function generateOwnStoryMarkup(story) {
         <small class="story-user">posted by ${story.username}</small>
       </li>
     `);
+    generalMarkup.prepend(favoriteInput)
     return generalMarkup.append(removeButton)
 }
 
@@ -100,8 +152,15 @@ function putStoriesOnPage() {
 
     // adding stories to the story list
     const $story = generateStoryMarkup(story);
-    // console.log($story)
+  
     $allStoriesList.append($story);
+    
+    // checking favorites 
+    for (let fav of currentUser.favorites){
+      if (fav.storyId == story.storyId){
+        $story.children()[0].checked = true
+      }
+    }
 
   }
 
@@ -129,6 +188,8 @@ async function addSubmit(e){
   const $story1 = generateOwnStoryMarkup(addedStory)
   $ownStoriesList.prepend($story1)
   currentUser.ownStories.push(addedStory)
+  storyList.stories.unshift((new Story(addedStory)))
+  
 
   // reset form
   $addStoryform[0].reset()

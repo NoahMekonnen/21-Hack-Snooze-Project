@@ -46,21 +46,6 @@ function navAll(e){
   $favoritesList.hide()
   $ownStoriesList.hide()
   $addStoryform.hide()
-  
-
-  // for (let story of $allStoriesList.children()){
-  //   console.log(story.children[0])
-  //   story.children[0].checked = true
-  //   // for (let favStory of JSON.parse(localStorage.getItem("favorites"))){
-  //   for (let favStory of JSON.parse(localStorage.getItem("favorites"))){
-  //     if (story.id == favStory.storyId){
-  //       console.log('hi')
-  //       console.log(story.children[0])
-  //       story.children[0].checked = true
-  //       console.log(story.children[0].checked)
-  //     }
-  //   }
-  // }
 }
 
 $navHome.on('click', navAll)
@@ -88,11 +73,9 @@ function favClick(e){
   $loginForm.hide();
   $ownStoriesList.hide()
 
-  localStorage.setItem('favorites', JSON.stringify(currentUser.favorites))
-  let list_of_stuff = JSON.parse(localStorage.getItem("favorites"))
   
   // iterating through list of favorites from localStorage
-  for (let favorite of list_of_stuff){
+  for (let favorite of currentUser.favorites){
     
     // making markups from the stories
     const favoriteStory = new Story(favorite)
@@ -102,14 +85,6 @@ function favClick(e){
     favMarkup[0].children[0].checked = true
     $favoritesList.append(favMarkup);
 
-    // favoriting 'same' story in all-stories-list
-    for (let markup of $allStoriesList.children()){
-      if (markup.id == favMarkup[0].id){
-        console.log("favClick compare",markup.children[0])
-        console.log(markup.children[0], "all stories")
-        markup.children[0].checked = true
-      }
-    }
   }
   // showing favorites
   $favoritesList.show();
@@ -128,6 +103,14 @@ function myStoriesClick(e){
   for (let story of currentUser.ownStories){
     let $story = generateOwnStoryMarkup(story)
     $ownStoriesList.prepend($story)
+    
+    // favoriting stories
+    for (let fav of currentUser.favorites){
+      if (fav.storyId == story.storyId){
+        console.log(fav)
+        $story.children()[0].checked = true
+      }
+    }
   }
   
   // hiding and showing stuff

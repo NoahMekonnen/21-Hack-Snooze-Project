@@ -32,8 +32,10 @@
 
 .story-author {
   margin-left: 2em;
+  color: #579841;
 }
 
 .story-user {
   display: block;
+  color: #ef6537;
 }
