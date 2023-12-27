@@ -31,6 +31,8 @@ function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
   $(".main-nav-links").show();
   $navLogin.hide();
+  $favoritesList.hide()
+  $ownStoriesList.hide()
   $navLogOut.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
@@ -103,7 +105,6 @@ function myStoriesClick(e){
   for (let story of currentUser.ownStories){
     let $story = generateOwnStoryMarkup(story)
     $ownStoriesList.prepend($story)
-    
     // favoriting stories
     for (let fav of currentUser.favorites){
       if (fav.storyId == story.storyId){

@@ -114,13 +114,25 @@ function updateUIOnUserLogin() {
   updateNavOnLogin();
 }
 
-function addFavorite(e){
-  currentUser.favorites.push(e.target.parentNode)
+async function addFavorite(story){
+  currentUser.favorites.push(story)
+  // adding favorite to server
+  await axios({
+    method: "POST",
+    url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+    data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
+  });
 }
 
-function removeFavorite(e){
+async function removeFavorite(story){
+  // deleting favorite from server
+  await axios({
+    method: "DELETE",
+    url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+    data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
+  })
 
-  let removedIndex = currentUser.favorites.indexOf(e.target.parentNode)
+  const removedIndex = currentUser.favorites.indexOf(story)
   currentUser.favorites.splice(removedIndex,1)
 
   

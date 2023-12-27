@@ -24,27 +24,15 @@ function generateStoryMarkup(story) {
   const hostName = story.getHostName();
 
   const favoriteInput = $(`<input type = "checkbox" id = "favorite"/>`)
-  favoriteInput.on('click', async function(e){
+  favoriteInput.on('click', function(e){
     // if checked add to favorites
     if (favoriteInput[0].checked){
-      currentUser.favorites.push(story)
-      await axios({
-        method: "POST",
-        url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
-        data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
-      });
+      addFavorite(story)
     }
     // if unchecked remove from favorites
     else{
       // removing favorite
-      await axios({
-      method: "DELETE",
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
-      data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
-    })
-
-      const removedIndex = currentUser.favorites.indexOf(story)
-      currentUser.favorites.splice(removedIndex,1)
+      removeFavorite(story)
     }
 
   })
@@ -76,31 +64,15 @@ function generateOwnStoryMarkup(story) {
     // if checked add to favorites
     if (favoriteInput[0].checked){
       // story.checked = true
-      currentUser.favorites.push(story)
-      await axios({
-        method: "POST",
-        url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
-        data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
-      });
+      addFavorite(story)
     }
     // if unchecked remove from favorites
     else{
       // removing favorite
-      await axios({
-      method: "DELETE",
-      url: `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
-      data:{story:{author: story.author, url: story.url, title: story.title},token: currentUser.loginToken}
-    })
-      // story.checked = false
-      const removedIndex = currentUser.favorites.indexOf(story)
-      currentUser.favorites.splice(removedIndex,1)
+      removeFavorite(story)
     }
 
   })
-  // if (story.checked){
-
-  //   favoriteInput[0].checked = true
-  // }
 
   const removeButton = $('<button>Delete</button>')
   // remove button functionality
@@ -119,13 +91,10 @@ function generateOwnStoryMarkup(story) {
     const removedIndex = currentUser.ownStories.indexOf(story)
     currentUser.ownStories.splice(removedIndex,1)
     
-    for (let $story of $allStoriesList.children()){
-      if ($story.id == story.storyId){
-        $story.remove()
-      }
-    }
+    
   })
   const hostName = story.getHostName();
+
   let generalMarkup = $(`
       <li id="${story.storyId}">
         <a href="${story.url}" target="a_blank" class="story-link">
