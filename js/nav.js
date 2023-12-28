@@ -31,6 +31,8 @@ function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
   $(".main-nav-links").show();
   $navLogin.hide();
+  $signupForm.hide()
+  $loginForm.hide()
   $favoritesList.hide()
   $ownStoriesList.hide()
   $navLogOut.show();
