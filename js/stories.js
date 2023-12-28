@@ -20,7 +20,7 @@ async function getAndShowStoriesOnStart() {
  */
 
 function generateStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
+
   const hostName = story.getHostName();
 
   const favoriteInput = $(`<input type = "checkbox" id = "favorite"/>`)
@@ -58,12 +58,11 @@ function generateStoryMarkup(story) {
  */
 
 function generateOwnStoryMarkup(story) {
-  // console.debug("generateStoryMarkup", story);
+  
   const favoriteInput = $(`<input type = "checkbox" id = "favorite"/>`)
   favoriteInput.on('click', async function(e){
     // if checked add to favorites
     if (favoriteInput[0].checked){
-      // story.checked = true
       addFavorite(story)
     }
     // if unchecked remove from favorites
@@ -133,7 +132,6 @@ function putStoriesOnPage() {
 
   }
 
-  // $allStoriesList.show();
 }
 
 function navSubmit(){

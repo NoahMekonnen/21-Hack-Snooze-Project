@@ -8,8 +8,13 @@
 
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
-  // hidePageComponents();
   putStoriesOnPage();
+  $allStoriesList.show()
+  $loginForm.hide()
+  $signupForm.hide()
+  $favoritesList.hide()
+  $ownStoriesList.hide()
+  $addStoryform.hide()
 }
 
 $body.on("click", "#nav-all", navAllStories);
@@ -29,7 +34,7 @@ $navLogin.on("click", navLoginClick);
 
 function updateNavOnLogin() {
   console.debug("updateNavOnLogin");
-  $(".main-nav-links").show();
+  // $(".main-nav-links").show();
   $navLogin.hide();
   $signupForm.hide()
   $loginForm.hide()
@@ -44,12 +49,7 @@ function navAll(e){
   e.preventDefault()
   
   // hiding and showing stuff
-  $allStoriesList.show()
-  $loginForm.hide()
-  $signupForm.hide()
-  $favoritesList.hide()
-  $ownStoriesList.hide()
-  $addStoryform.hide()
+  
 }
 
 $navHome.on('click', navAll)
@@ -58,6 +58,7 @@ $navHome.on('click', navAll)
 function navSubmit(e){
   e.preventDefault()
   $ownStoriesList.hide()
+  $favoritesList.hide()
   console.log('navClick');
   navSubmit();
 }
@@ -110,7 +111,6 @@ function myStoriesClick(e){
     // favoriting stories
     for (let fav of currentUser.favorites){
       if (fav.storyId == story.storyId){
-        console.log(fav)
         $story.children()[0].checked = true
       }
     }
